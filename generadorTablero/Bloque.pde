@@ -44,7 +44,17 @@ class Bloque {
  
  boolean vecinosSinVisitar(){
    for (Bloque vecino:vecinos){
-     if 
+     if(!vecino.tomadoPorLaberinto){
+       return true;
+     }
+   }
+   return false;
+ }
+ 
+ Bloque vecinoAleatorio(){
+   Bloque veci = vecinos.get(floor(random(0,vecinos.size()))));
+   while(veci.tomadoPorLaberinto){
+     
    }
  }
 }
