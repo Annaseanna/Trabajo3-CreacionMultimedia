@@ -26,6 +26,12 @@ class Bloque {
    if (caminos[3]){
     line(x,y+tam,x,y); 
    }
+   if(tomadoPorLaberinto){
+     noStroke();
+     fill(255,50,255,95);
+     rect(x,y,tam,tam);
+     stroke(0);
+   }
  }
  void anadirVecinos(){
    if(actFila>0){
@@ -34,11 +40,11 @@ class Bloque {
    if(actCol<columnas-1){
      vecinos.add(bloques[actFila][actCol+1]);
    }
-   if(actFila>filas-1){
+   if(actFila<filas-1){
      vecinos.add(bloques[actFila+1][actCol]);
    }
    if(actCol>0){
-     vecinos.add(bloques[actFila][actCol]);
+     vecinos.add(bloques[actFila][actCol-1]);
    }
  }
  
@@ -52,10 +58,10 @@ class Bloque {
  }
  
  Bloque vecinoAleatorio(){
-   Bloque veci = vecinos.get(floor(random(0,vecinos.size()))));
+   Bloque veci = vecinos.get(floor(random(0,vecinos.size())));
    while(veci.tomadoPorLaberinto){
      vecinos.remove(veci);
-     veci=vecinos.get(floor(random(0,vecinos.size()))));
+     veci=vecinos.get(floor(random(0,vecinos.size())));
    }
    veci.tomadoPorLaberinto=true;
    vecinos.remove(veci);
