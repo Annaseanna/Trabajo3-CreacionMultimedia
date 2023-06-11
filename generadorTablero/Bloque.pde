@@ -54,7 +54,11 @@ class Bloque {
  Bloque vecinoAleatorio(){
    Bloque veci = vecinos.get(floor(random(0,vecinos.size()))));
    while(veci.tomadoPorLaberinto){
-     
+     vecinos.remove(veci);
+     veci=vecinos.get(floor(random(0,vecinos.size()))));
    }
+   veci.tomadoPorLaberinto=true;
+   vecinos.remove(veci);
+   return veci;
  }
 }
