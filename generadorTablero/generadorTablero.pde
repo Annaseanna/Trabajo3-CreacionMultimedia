@@ -27,7 +27,7 @@ boolean inicio = true;
 
 void setup(){
   size(720,720);
-  fondo = loadImage("fondo_inicio.jpg");
+  fondo = loadImage("fondo_inicio.png");
   //creacion botones
   facil = new ControlP5(this);
   medio = new ControlP5(this);
