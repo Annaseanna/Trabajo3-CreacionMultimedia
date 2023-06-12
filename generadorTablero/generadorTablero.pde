@@ -1,3 +1,9 @@
+import controlP5.*;
+
+//botones
+ControlP5 facil;
+ControlP5 medio;
+ControlP5 dificil;
 //Valores globales
 int columnas;
 int filas;
@@ -20,11 +26,31 @@ boolean inicio = true;
 
 void setup(){
   size(720,720);
-  filas=height/tam;
-  columnas=width/tam;
-  bloques= new Bloque[filas][columnas];
-  posicion_trofeo = int(tam/2 + int(random(1,columnas))*tam);
+    filas=height/tam;
+    columnas=width/tam;
+    bloques= new Bloque[filas][columnas];
+    posicion_trofeo = int(tam/2 + int(random(1,columnas))*tam);
+  //creacion botones
+  facil = new ControlP5(this);
+  medio = new ControlP5(this);
+  dificil = new ControlP5(this);
+  facil.addButton("Facil")
+    .setPosition(100, 600)
+    .setSize(80, 30)
+    .setLabel("easy");
+    medio.addButton("Medio")
+    .setPosition(320, 600)
+    .setSize(80, 30)
+    .setLabel("medium");
+    dificil.addButton("Dificil")
+    .setPosition(540, 600)
+    .setSize(80, 30)
+    .setLabel("hard");
+    
   
+  
+  
+    
   //Creacion de bloques (lineas)
   for (int i=0;i<filas;i++){
     for (int j=0;j<columnas;j++){
@@ -43,11 +69,20 @@ void setup(){
   
   frameRate(10);
 }
+public void Facil(){
+  print("hundir");
+  //tam = 120;
+  inicio = false;
+  facil.remove("Facil"); 
+  medio.remove("Medio");
+  dificil.remove("Dificil");
+}
+
 
 void draw(){
   if(inicio){
     background(0);
-    text()
+    
   } else {
     if (!acabadoDeDibujar){
       background(0,255,255);
