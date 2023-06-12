@@ -3,13 +3,16 @@ int columnas;
 int filas;
 int tam=80;
 //array de lineas
+//oki
 ArrayList<Linea> datos_lineas;
 //Array de bloques
 Bloque[][]bloques;
 Bloque ahora;
+Bolita bolita = new Bolita();
 boolean acabadoDeDibujar=false;
 ArrayList<Bloque> conjunto=new ArrayList<Bloque>();
-
+float[] posicionBolita;
+int sensibilidad=10;
 
 void setup(){
   size(480,480);
@@ -46,7 +49,6 @@ void draw(){
         datos_lineas = bloques[i][j].mostrar();
       }
     }
-    println(datos_lineas.get(0).x1);
     fill(193,50,193);
     rect(ahora.x,ahora.y,tam,tam);
     
@@ -60,12 +62,33 @@ void draw(){
       conjunto.remove(siguiente);
       ahora =siguiente;
     } else {
-      print("Laberinto finalizado");
+      //print("Laberinto finalizado");
       //pintarUltimaFilaAleatoriamente();
-      print(conjunto);
-      noLoop();
+      //noLoop();
     }
   }
+  posicionBolita=bolita.mostrar(mouseX,mouseY);
+  println("posicion x"+posicionBolita[0]);
+  println("posicion y"+posicionBolita[1]);
+  print("tamano datos "+datos_lineas.size());
+  for (int i=0;i<datos_lineas.size();i++){
+    if(datos_lineas.get(i).pos){
+      if(posicionBolita[0]<datos_lineas.get(i).x1 & posicionBolita[0]>datos_lineas.get(i).x2){
+        if(abs(posicionBolita[1]-datos_lineas.get(i).y1)<=sensibilidad){
+          //SE ACTIVA
+          println("toco linea horizontal");
+          }  
+        }
+    }
+    else{
+      if(posicionBolita[1]<datos_lineas.get(i).y2 & posicionBolita[1]>datos_lineas.get(i).y1){
+        if(abs(posicionBolita[0]-datos_lineas.get(i).x1)<=sensibilidad){
+          println("toco linea vertical");
+          //SE ACTIVA
+        }  
+      }
+    }
+  } 
 }
 
 void quitarParedes(Bloque ah,Bloque sig){
@@ -89,11 +112,3 @@ void quitarParedes(Bloque ah,Bloque sig){
     sig.caminos[2] = false;
   }
 }
-
-/*void pintarUltimaFilaAleatoriamente() {
-  print(columnas);
-  int fila = height-(height/tam); // Última fila del laberinto
-  int columnaAleatoria = floor(random(columnas)); 
-  fill(0,0,255);
-  rect(fila,columnaAleatoria*(width/tam),tam,tam);
-}*/

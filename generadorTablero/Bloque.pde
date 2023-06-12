@@ -1,3 +1,4 @@
+
 class Bloque {
   //rectangulo que dibujara el tablero 
   int x;
@@ -17,22 +18,22 @@ class Bloque {
    //Array de lineas
    ArrayList<Linea> lineas=new ArrayList<Linea>();
    if (caminos[0]){
-     Linea datos = new Linea(x,y,x+tam,y);
+     Linea datos = new Linea(x,y,x+tam,y,true);
      datos.drawLinea();
      lineas.add(datos);
    }
    if (caminos[1]){
-     Linea datos = new Linea(x+tam,y,x+tam,y+tam);
+     Linea datos = new Linea(x+tam,y,x+tam,y+tam,false);
      datos.drawLinea();
      lineas.add(datos);
    }
    if (caminos[2]){
-     Linea datos = new Linea(x+tam,y+tam,x,y+tam);
+     Linea datos = new Linea(x+tam,y+tam,x,y+tam,true);
      datos.drawLinea();
      lineas.add(datos);
    }
    if (caminos[3]){
-     Linea datos = new Linea(x,y+tam,x,y);
+     Linea datos = new Linea(x,y+tam,x,y,false);
      datos.drawLinea();
      lineas.add(datos);
    }
