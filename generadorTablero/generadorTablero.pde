@@ -2,7 +2,8 @@
 int columnas;
 int filas;
 int tam=80;
-
+//array de lineas
+ArrayList<Linea> datos_lineas;
 //Array de bloques
 Bloque[][]bloques;
 Bloque ahora;
@@ -42,9 +43,10 @@ void draw(){
     //Mostrar la cuadricula
     for (int i=0;i<filas;i++){
       for (int j=0;j<columnas;j++){
-        bloques[i][j].mostrar();
+        datos_lineas = bloques[i][j].mostrar();
       }
     }
+    println(datos_lineas.get(0).x1);
     fill(193,50,193);
     rect(ahora.x,ahora.y,tam,tam);
     
