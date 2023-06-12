@@ -14,6 +14,7 @@ class Bloque {
    actCol=colum;
  }
  void mostrar(){
+   
    if (caminos[0]){
     line(x,y,x+tam,y);
    }
@@ -26,7 +27,7 @@ class Bloque {
    if (caminos[3]){
     line(x,y+tam,x,y); 
    }
-   if(tomadoPorLaberinto){
+   if(tomadoPorLaberinto){ // pinta el camino recorrido (azul oscuro)
      noStroke();
      fill(255,50,255,95);
      rect(x,y,tam,tam);

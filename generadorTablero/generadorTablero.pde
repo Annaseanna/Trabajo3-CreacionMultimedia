@@ -59,7 +59,7 @@ void draw(){
       ahora =siguiente;
     } else {
       print("Laberinto finalizado");
-      pintarUltimaFilaAleatoriamente();
+      //pintarUltimaFilaAleatoriamente();
       print(conjunto);
       noLoop();
     }
@@ -88,10 +88,10 @@ void quitarParedes(Bloque ah,Bloque sig){
   }
 }
 
-void pintarUltimaFilaAleatoriamente() {
+/*void pintarUltimaFilaAleatoriamente() {
   print(columnas);
   int fila = height-(height/tam); // Última fila del laberinto
   int columnaAleatoria = floor(random(columnas)); 
   fill(0,0,255);
   rect(fila,columnaAleatoria*(width/tam),tam,tam);
-}
+}*/
