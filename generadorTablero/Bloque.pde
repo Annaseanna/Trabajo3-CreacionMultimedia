@@ -14,7 +14,6 @@ class Bloque {
    actCol=colum;
  }
  void mostrar(){
-   
    if (caminos[0]){
     line(x,y,x+tam,y);
    }
