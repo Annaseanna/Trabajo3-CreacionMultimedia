@@ -1,5 +1,6 @@
 import controlP5.*;
-
+//
+PImage fondo;
 //botones
 ControlP5 facil;
 ControlP5 medio;
@@ -26,10 +27,7 @@ boolean inicio = true;
 
 void setup(){
   size(720,720);
-    filas=height/tam;
-    columnas=width/tam;
-    bloques= new Bloque[filas][columnas];
-    posicion_trofeo = int(tam/2 + int(random(1,columnas))*tam);
+  fondo = loadImage("fondo_inicio.jpg");
   //creacion botones
   facil = new ControlP5(this);
   medio = new ControlP5(this);
@@ -38,20 +36,29 @@ void setup(){
     .setPosition(100, 600)
     .setSize(80, 30)
     .setLabel("easy");
+  facil.setColorBackground(color(#8F52F5));
     medio.addButton("Medio")
     .setPosition(320, 600)
     .setSize(80, 30)
     .setLabel("medium");
+    medio.setColorBackground(color(#8F52F5));
     dificil.addButton("Dificil")
     .setPosition(540, 600)
     .setSize(80, 30)
     .setLabel("hard");
+    dificil.setColorBackground(color(#8F52F5));
     
+  frameRate(10);
+}
+
+void crearEscena(int dificultad){
+  tam = dificultad;
+  filas=height/tam;
+  columnas=width/tam;
+  bloques= new Bloque[filas][columnas];
+  posicion_trofeo = int(tam/2 + int(random(1,columnas))*tam);
   
-  
-  
-    
-  //Creacion de bloques (lineas)
+  //creacion de bloques
   for (int i=0;i<filas;i++){
     for (int j=0;j<columnas;j++){
       bloques[i][j] =new Bloque(i,j);
@@ -66,23 +73,34 @@ void setup(){
   //Variable creada para controlar las que son tomadas por el laberinto
   ahora=bloques[0][0];
   ahora.tomadoPorLaberinto=true;
-  
-  frameRate(10);
 }
-public void Facil(){
-  print("hundir");
-  //tam = 120;
+
+void Facil(){
+  crearEscena(120);
   inicio = false;
   facil.remove("Facil"); 
   medio.remove("Medio");
   dificil.remove("Dificil");
 }
 
+void Medio(){
+  crearEscena(80);
+  inicio = false;
+  facil.remove("Facil"); 
+  medio.remove("Medio");
+  dificil.remove("Dificil");
+}
+void Dificil(){
+  crearEscena(60);
+  inicio = false;
+  facil.remove("Facil"); 
+  medio.remove("Medio");
+  dificil.remove("Dificil");
+}
 
 void draw(){
   if(inicio){
-    background(0);
-    
+    image(fondo,0,0);
   } else {
     if (!acabadoDeDibujar){
       background(0,255,255);
@@ -137,7 +155,15 @@ void draw(){
           }  
         }
       }
-    } 
+    }
+   // println(abs(posicionBolita[1]- (height - tam/2))<tam/2 - 5);
+    if(abs(posicionBolita[0]-posicion_trofeo)<tam/2 - 5 & abs(posicionBolita[1]- (height - tam/2))<tam/2 - 5){
+      background(0);
+      fill(255);
+      textSize(128);
+      text("GANASTE", width/10, height/2-30);
+      noLoop();
+    }
   }
 }
 
