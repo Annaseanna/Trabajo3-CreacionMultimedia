@@ -13,18 +13,28 @@ class Bloque {
    actFila=fila;
    actCol=colum;
  }
- void mostrar(){
+ ArrayList<Linea> mostrar(){
+   //Array de lineas
+   ArrayList<Linea> lineas=new ArrayList<Linea>();
    if (caminos[0]){
-    line(x,y,x+tam,y);
+     Linea datos = new Linea(x,y,x+tam,y);
+     datos.drawLinea();
+     lineas.add(datos);
    }
    if (caminos[1]){
-    line(x+tam,y,x+tam,y+tam); 
+     Linea datos = new Linea(x+tam,y,x+tam,y+tam);
+     datos.drawLinea();
+     lineas.add(datos);
    }
    if (caminos[2]){
-    line(x+tam,y+tam,x,y+tam); 
+     Linea datos = new Linea(x+tam,y+tam,x,y+tam);
+     datos.drawLinea();
+     lineas.add(datos);
    }
    if (caminos[3]){
-    line(x,y+tam,x,y); 
+     Linea datos = new Linea(x,y+tam,x,y);
+     datos.drawLinea();
+     lineas.add(datos);
    }
    if(tomadoPorLaberinto){ // pinta el camino recorrido (azul oscuro)
      noStroke();
@@ -32,6 +42,7 @@ class Bloque {
      rect(x,y,tam,tam);
      stroke(0);
    }
+   return lineas;
  }
  void anadirVecinos(){
    if(actFila>0){
