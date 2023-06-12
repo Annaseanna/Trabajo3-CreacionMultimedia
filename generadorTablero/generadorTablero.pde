@@ -2,9 +2,11 @@
 int columnas;
 int filas;
 int tam=80;
+int posicion_trofeo;
 //array de lineas
 //oki
-ArrayList<Linea> datos_lineas;
+ArrayList<Linea> dato_linea;
+ArrayList<Linea> datos_lineas = new ArrayList<Linea>();
 //Array de bloques
 Bloque[][]bloques;
 Bloque ahora;
@@ -14,11 +16,14 @@ ArrayList<Bloque> conjunto=new ArrayList<Bloque>();
 float[] posicionBolita;
 int sensibilidad=10;
 
+boolean inicio = true;
+
 void setup(){
-  size(480,480);
+  size(720,720);
   filas=height/tam;
   columnas=width/tam;
   bloques= new Bloque[filas][columnas];
+  posicion_trofeo = int(tam/2 + int(random(1,columnas))*tam);
   
   //Creacion de bloques (lineas)
   for (int i=0;i<filas;i++){
@@ -40,55 +45,65 @@ void setup(){
 }
 
 void draw(){
-  if (!acabadoDeDibujar){
-    background(0,255,255);
-    strokeWeight(4);
-    //Mostrar la cuadricula
-    for (int i=0;i<filas;i++){
-      for (int j=0;j<columnas;j++){
-        datos_lineas = bloques[i][j].mostrar();
+  if(inicio){
+    background(0);
+    text()
+  } else {
+    if (!acabadoDeDibujar){
+      background(0,255,255);
+      strokeWeight(4);
+      //Mostrar la cuadricula
+       datos_lineas = new ArrayList<Linea>();
+      for (int i=0;i<filas;i++){
+        for (int j=0;j<columnas;j++){
+          dato_linea = bloques[i][j].mostrar();
+          datos_lineas.addAll(dato_linea);
+        }
+      }
+      fill(193,50,193);
+      rect(ahora.x,ahora.y,tam,tam);
+      
+      if(ahora.vecinosSinVisitar()){
+        Bloque siguiente = ahora.vecinoAleatorio();
+        conjunto.add(ahora);
+        quitarParedes(ahora,siguiente);
+        ahora=siguiente;
+      } else if(conjunto.size()>0){
+        Bloque siguiente = conjunto.get(conjunto.size()-1);
+        conjunto.remove(siguiente);
+        ahora =siguiente;
+      } else {
+        //print("Laberinto finalizado");
+        //pintarUltimaFilaAleatoriamente();
+        //noLoop();
       }
     }
-    fill(193,50,193);
-    rect(ahora.x,ahora.y,tam,tam);
+    fill(255);
+    circle(posicion_trofeo,height - tam/2,tam/2 - 5);
     
-    if(ahora.vecinosSinVisitar()){
-      Bloque siguiente = ahora.vecinoAleatorio();
-      conjunto.add(ahora);
-      quitarParedes(ahora,siguiente);
-      ahora=siguiente;
-    } else if(conjunto.size()>0){
-      Bloque siguiente = conjunto.get(conjunto.size()-1);
-      conjunto.remove(siguiente);
-      ahora =siguiente;
-    } else {
-      //print("Laberinto finalizado");
-      //pintarUltimaFilaAleatoriamente();
-      //noLoop();
-    }
-  }
-  posicionBolita=bolita.mostrar(mouseX,mouseY);
-  println("posicion x"+posicionBolita[0]);
-  println("posicion y"+posicionBolita[1]);
-  print("tamano datos "+datos_lineas.size());
-  for (int i=0;i<datos_lineas.size();i++){
-    if(datos_lineas.get(i).pos){
-      if(posicionBolita[0]<datos_lineas.get(i).x1 & posicionBolita[0]>datos_lineas.get(i).x2){
-        if(abs(posicionBolita[1]-datos_lineas.get(i).y1)<=sensibilidad){
-          //SE ACTIVA
-          println("toco linea horizontal");
+    posicionBolita=bolita.mostrar(mouseX,mouseY);
+    println("posicion x"+posicionBolita[0]);
+    println("posicion y"+posicionBolita[1]);
+    print("tamano datos "+datos_lineas.size());
+    for (int i=0;i<datos_lineas.size();i++){
+      if(datos_lineas.get(i).pos){
+        if(posicionBolita[0]<datos_lineas.get(i).x1 & posicionBolita[0]>datos_lineas.get(i).x2){
+          if(abs(posicionBolita[1]-datos_lineas.get(i).y1)<=sensibilidad){
+            //SE ACTIVA
+            println("toco linea horizontal");
+            }  
+          }
+      }
+      else{
+        if(posicionBolita[1]<datos_lineas.get(i).y2 & posicionBolita[1]>datos_lineas.get(i).y1){
+          if(abs(posicionBolita[0]-datos_lineas.get(i).x1)<=sensibilidad){
+            println("toco linea vertical");
+            //SE ACTIVA
           }  
         }
-    }
-    else{
-      if(posicionBolita[1]<datos_lineas.get(i).y2 & posicionBolita[1]>datos_lineas.get(i).y1){
-        if(abs(posicionBolita[0]-datos_lineas.get(i).x1)<=sensibilidad){
-          println("toco linea vertical");
-          //SE ACTIVA
-        }  
       }
-    }
-  } 
+    } 
+  }
 }
 
 void quitarParedes(Bloque ah,Bloque sig){

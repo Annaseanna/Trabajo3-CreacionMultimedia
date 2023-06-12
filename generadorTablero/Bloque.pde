@@ -18,7 +18,7 @@ class Bloque {
    //Array de lineas
    ArrayList<Linea> lineas=new ArrayList<Linea>();
    if (caminos[0]){
-     Linea datos = new Linea(x,y,x+tam,y,true);
+     Linea datos = new Linea(x+tam,y,x,y,true);
      datos.drawLinea();
      lineas.add(datos);
    }
@@ -33,7 +33,7 @@ class Bloque {
      lineas.add(datos);
    }
    if (caminos[3]){
-     Linea datos = new Linea(x,y+tam,x,y,false);
+     Linea datos = new Linea(x,y,x,y+tam,false);
      datos.drawLinea();
      lineas.add(datos);
    }
