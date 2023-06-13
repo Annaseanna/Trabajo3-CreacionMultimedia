@@ -1,14 +1,24 @@
 import oscP5.*;
 OscP5 oscP5;
 import controlP5.*;
-float y;
-float x;
+float y1;
+float x1;
+float y2;
+float x2;
 float speed = 0.5;
-float posx;
-float posy;
+float posx1;
+float posy1;
+float posx2;
+float posy2;
 PImage fondo;
-PImage piso;
+PImage piso60;
+PImage piso80;
+PImage piso120;
 PImage generadorTablero;
+PImage cuadricula;
+PImage ganador;
+PImage player1;
+PImage player2;
 //botones
 ControlP5 facil;
 ControlP5 medio;
@@ -18,6 +28,8 @@ int columnas;
 int filas;
 int tam=80;
 int posicion_trofeo;
+//true jug1 false jug 2
+boolean bolita=true;
 //array de lineas
 //oki
 ArrayList<Linea> dato_linea;
@@ -25,13 +37,16 @@ ArrayList<Linea> datos_lineas = new ArrayList<Linea>();
 //Array de bloques
 Bloque[][]bloques;
 Bloque ahora;
-Bolita bolita = new Bolita();
+Bolita bolita1 = new Bolita();
+Bolita bolita2 = new Bolita();
 boolean acabadoDeDibujar=false;
 ArrayList<Bloque> conjunto=new ArrayList<Bloque>();
-float[] posicionBolita;
+float[] posicionBolita1;
+float[] posicionBolita2;
 int sensibilidad=10;
 PFont customFont;
 int port=2020;
+boolean gano;
 
 boolean inicio = true;
 
@@ -39,8 +54,14 @@ void setup(){
   oscP5 = new OscP5(this, port);
   size(720,720);
   fondo = loadImage("fondo_inicio.png");
-  piso = loadImage("piso60.png");
+  piso60 = loadImage("piso60.png");
+  piso80 = loadImage("piso80.png");
+  piso120 = loadImage("piso120.png");
+  player1 = loadImage("player1.png");
+  player2 = loadImage("player2.png");
   generadorTablero=loadImage("generador_tablero.png");
+  cuadricula=loadImage("cuadricula.png");
+  ganador=loadImage("ganador.png");
   //creacion botones
   facil = new ControlP5(this);
   medio = new ControlP5(this);
@@ -69,12 +90,20 @@ void setup(){
 
 void oscEvent(OscMessage message) {
   if(message.checkAddrPattern("/multisense/orientation/pitch")){
-    y = message.get(0).floatValue();
+    y1 = message.get(0).floatValue();
     println("y: "+message.get(0).floatValue());
   }
   if(message.checkAddrPattern("/multisense/orientation/roll")){
-    x = message.get(0).floatValue();
+    x1 = message.get(0).floatValue();
     println("x :"+message.get(0).floatValue());
+  }
+  if(message.checkAddrPattern("/multisense/orientation/pitch1")){
+    y2 = message.get(0).floatValue();
+    println("y1: "+message.get(0).floatValue());
+  }
+  if(message.checkAddrPattern("/multisense/orientation/roll1")){
+    x2 = message.get(0).floatValue();
+    println("x1 :"+message.get(0).floatValue());
   }
 }
 
@@ -84,8 +113,10 @@ void crearEscena(int dificultad){
   columnas=width/tam;
   bloques= new Bloque[filas][columnas];
   posicion_trofeo = int(tam/2 + int(random(1,columnas))*tam);
-  posx = tam/2;
-  posy = tam/2;
+  posx1 = tam/2-20;
+  posy1 = tam/2-20;
+  posx2 = tam/2+20;
+  posy2 = tam/2+20;
   
   //creacion de bloques
   for (int i=0;i<filas;i++){
@@ -138,18 +169,30 @@ void draw(){
     image(fondo,0,0);
   } else {
     if (ralentizador%10 == 0){
+      image(cuadricula,720,720);
       background(0,255,255);
-      strokeWeight(4);
+      image(cuadricula,0,0);
       //Mostrar la cuadricula
        datos_lineas = new ArrayList<Linea>();
       for (int i=0;i<filas;i++){
         for (int j=0;j<columnas;j++){
+          strokeWeight(10);
           dato_linea = bloques[i][j].mostrar();
           datos_lineas.addAll(dato_linea);
         }
       }
       if(!acabadoDeDibujar){
-        image(generadorTablero,ahora.x+tam/4,ahora.y+tam/4);
+        fill(#808110);
+        noStroke();
+        if (tam==120){
+          image(generadorTablero,ahora.x+tam/4,ahora.y+tam/4);
+        }
+        if (tam==80){
+          image(generadorTablero,ahora.x+tam/8,ahora.y+tam/8);
+        }
+        if (tam==60){
+          image(generadorTablero,ahora.x,ahora.y);
+        }
       }
       
       if(ahora.vecinosSinVisitar()){
@@ -170,43 +213,114 @@ void draw(){
     } 
     if(acabadoDeDibujar) {
       fill(255);
-      circle(posicion_trofeo,height - tam/2,tam/2 - 5);
-      posx += x*speed;
-      posy += y*speed*-1;
-      posicionBolita = bolita.mostrar(posx,posy);
-      println("posicion x"+posicionBolita[0]);
-      println("posicion y"+posicionBolita[1]);
+      if(tam==60){
+        image(ganador,posicion_trofeo+tam/2,height - tam);
+      }
+      if(tam==80){
+        image(ganador,posicion_trofeo-tam/3,height - tam+(tam/6));
+      }
+      if(tam==120){
+        image(ganador,posicion_trofeo-(tam/4),height - tam+(tam/4));
+      }
+      posx1 += x1*speed;
+      posy1 += y1*speed*-1;
+      posx2 += x2*speed;
+      posy2 += y2*speed*-1;
+      //boolean gano1=colision(x1,y1,posx1,posy1,posicionBolita1,bolita1,true);
+      posicionBolita1 = bolita1.mostrar(posx1,posy1,true);
+      println("posicion x"+posicionBolita1[0]);
+      println("posicion y"+posicionBolita1[1]);
       print("tamano datos "+datos_lineas.size());
       for (int i=0;i<datos_lineas.size();i++){
         if(datos_lineas.get(i).pos){
-          if(posicionBolita[0]<datos_lineas.get(i).x1 & posicionBolita[0]>datos_lineas.get(i).x2){
-            if(abs(posicionBolita[1]-datos_lineas.get(i).y1)<=sensibilidad){
-              posx = tam/2;
-              posy = tam/2;
+          if(posicionBolita1[0]<datos_lineas.get(i).x1 & posicionBolita1[0]>datos_lineas.get(i).x2){
+            if(abs(posicionBolita1[1]-datos_lineas.get(i).y1)<=sensibilidad){
+              posx1 = tam/2;
+              posy1 = tam/2;
               }  
             }
         }
         else{
-          if(posicionBolita[1]<datos_lineas.get(i).y2 & posicionBolita[1]>datos_lineas.get(i).y1){
-            if(abs(posicionBolita[0]-datos_lineas.get(i).x1)<=sensibilidad){
-              posx = tam/2;
-              posy = tam/2;
+          if(posicionBolita1[1]<datos_lineas.get(i).y2 & posicionBolita1[1]>datos_lineas.get(i).y1){
+            if(abs(posicionBolita1[0]-datos_lineas.get(i).x1)<=sensibilidad){
+              posx1 = tam/2;
+              posy1 = tam/2;
             }  
           }
         }
+        if(abs(posicionBolita1[0]-posicion_trofeo)<tam/2 - 5 & abs(posicionBolita1[1]- (height - tam/2))<tam/2 - 5){
+          background(0);
+          fill(255);
+          textSize(128);
+          text("GANASTE 1", width/10, height/2-30);
+          noLoop();
+        }
       }
+      posicionBolita2 = bolita2.mostrar(posx2,posy2,false);
+      println("posicion x"+posicionBolita1[0]);
+      println("posicion y"+posicionBolita1[1]);
+      print("tamano datos "+datos_lineas.size());
+      for (int i=0;i<datos_lineas.size();i++){
+        if(datos_lineas.get(i).pos){
+          if(posicionBolita2[0]<datos_lineas.get(i).x1 & posicionBolita2[0]>datos_lineas.get(i).x2){
+            if(abs(posicionBolita2[1]-datos_lineas.get(i).y1)<=sensibilidad){
+              posx2 = tam/2;
+              posy2 = tam/2;
+              }  
+            }
+        }
+        else{
+          if(posicionBolita2[1]<datos_lineas.get(i).y2 & posicionBolita2[1]>datos_lineas.get(i).y1){
+            if(abs(posicionBolita2[0]-datos_lineas.get(i).x1)<=sensibilidad){
+              posx2 = tam/2;
+              posy2 = tam/2;
+            }  
+          }
+        }
+        if(abs(posicionBolita2[0]-posicion_trofeo)<tam/2 - 5 & abs(posicionBolita2[1]- (height - tam/2))<tam/2 - 5){
+          background(0);
+          fill(255);
+          textSize(128);
+          text("GANASTE 2", width/10, height/2-30);
+          noLoop();
+        }
+      }
+      //boolean gano2=colision(x2,y2,posx2,posy2,posicionBolita2,bolita2,false);
      // println(abs(posicionBolita[1]- (height - tam/2))<tam/2 - 5);
-      if(abs(posicionBolita[0]-posicion_trofeo)<tam/2 - 5 & abs(posicionBolita[1]- (height - tam/2))<tam/2 - 5){
-        background(0);
-        fill(255);
-        textSize(128);
-        text("GANASTE", width/10, height/2-30);
-        noLoop();
-      }
+      
     }
   }
 }
-
+boolean colision(float x, float y,float posx,float posy,float[] posicionBolita,Bolita bolita, boolean jugador){
+    posx += x*speed;
+    posy += y*speed*-1;
+    posicionBolita = bolita.mostrar(posx1,posy1,jugador);
+    println("posicion x"+posicionBolita[0]);
+    println("posicion y"+posicionBolita[1]);
+    print("tamano datos "+datos_lineas.size());
+    for (int i=0;i<datos_lineas.size();i++){
+      if(datos_lineas.get(i).pos){
+        if(posicionBolita[0]<datos_lineas.get(i).x1 & posicionBolita[0]>datos_lineas.get(i).x2){
+          if(abs(posicionBolita[1]-datos_lineas.get(i).y1)<=sensibilidad){
+            posx = tam/2;
+            posy = tam/2;
+            }  
+          }
+      }
+      else{
+        if(posicionBolita[1]<datos_lineas.get(i).y2 & posicionBolita[1]>datos_lineas.get(i).y1){
+          if(abs(posicionBolita[0]-datos_lineas.get(i).x1)<=sensibilidad){
+            posx = tam/2;
+            posy = tam/2;
+          }  
+        }
+      }
+      if(abs(posicionBolita[0]-posicion_trofeo)<tam/2 - 5 & abs(posicionBolita[1]- (height - tam/2))<tam/2 - 5){
+        return true;
+      }
+    }
+    return false;
+}
 
 void quitarParedes(Bloque ah,Bloque sig){
   int disx=ah.actFila - sig.actFila;

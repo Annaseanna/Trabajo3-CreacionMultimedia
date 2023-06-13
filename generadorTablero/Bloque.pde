@@ -39,12 +39,19 @@ class Bloque {
    }
    if(tomadoPorLaberinto){ // pinta el camino recorrido (azul oscuro)
      noStroke();
-     fill(255,50,255,95);
-     rect(x,y,tam,tam);
-     stroke(0);
+     if (tam ==60){
+       image(piso60,x,y);
+     }
+     if (tam==80){
+       image(piso80,x,y);
+     }
+     else{
+       image(piso120,x,y);
+     }
    }
    return lineas;
  }
+ 
  void anadirVecinos(){
    if(actFila>0){
      vecinos.add(bloques[actFila-1][actCol]);
