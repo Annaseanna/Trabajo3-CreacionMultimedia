@@ -1,6 +1,10 @@
+import netP5.*;
+import oscP5.*;
 import controlP5.*;
 //
 PImage fondo;
+PImage piso;
+PImage generadorTablero;
 //botones
 ControlP5 facil;
 ControlP5 medio;
@@ -23,12 +27,18 @@ ArrayList<Bloque> conjunto=new ArrayList<Bloque>();
 float[] posicionBolita;
 int sensibilidad=10;
 PFont customFont;
+int port=2020;
+OscP5 oscP5;
+float acumX;
+float acumY;
 
 boolean inicio = true;
 
 void setup(){
   size(720,720);
   fondo = loadImage("fondo_inicio.png");
+  piso = loadImage("piso60.png");
+  generadorTablero=loadImage("generador_tablero.png");
   //creacion botones
   facil = new ControlP5(this);
   medio = new ControlP5(this);
@@ -52,7 +62,7 @@ void setup(){
     .setLabel("hard")
     .setFont(customFont);
     dificil.setColorBackground(color(#216755));
-    
+  oscP5 = new OscP5(this, port);
   frameRate(10);
 }
 
@@ -118,8 +128,7 @@ void draw(){
           datos_lineas.addAll(dato_linea);
         }
       }
-      fill(193,50,193);
-      rect(ahora.x,ahora.y,tam,tam);
+      image(generadorTablero,ahora.x+tam/4,ahora.y+tam/4);
       
       if(ahora.vecinosSinVisitar()){
         Bloque siguiente = ahora.vecinoAleatorio();
@@ -171,6 +180,17 @@ void draw(){
     }
   }
 }
+/*float[] oscEvent(OscMessage message) {
+  if(message.checkAddrPattern("/multisense/orientation/pitch")){
+    acumY = acumY+message.get(0).floatValue();
+    println("y: "+message.get(0).floatValue());
+  }
+  if(message.checkAddrPattern("/multisense/orientation/roll")){
+    acumX= acumX+message.get(0).floatValue();
+    println("x :"+message.get(0).floatValue());
+  }
+  float[] acum = {acumY,acumX};
+}*/
 
 void quitarParedes(Bloque ah,Bloque sig){
   int disx=ah.actFila - sig.actFila;
