@@ -22,6 +22,7 @@ boolean acabadoDeDibujar=false;
 ArrayList<Bloque> conjunto=new ArrayList<Bloque>();
 float[] posicionBolita;
 int sensibilidad=10;
+PFont customFont;
 
 boolean inicio = true;
 
@@ -32,21 +33,25 @@ void setup(){
   facil = new ControlP5(this);
   medio = new ControlP5(this);
   dificil = new ControlP5(this);
+  customFont = createFont("Algerian", 25);
   facil.addButton("Facil")
-    .setPosition(100, 600)
-    .setSize(80, 30)
-    .setLabel("easy");
-  facil.setColorBackground(color(#8F52F5));
+    .setPosition(((1*width)/4)-90, 600)
+    .setSize(120, 30)
+    .setLabel("easy")
+    .setFont(customFont);
+  facil.setColorBackground(color(#216755));
     medio.addButton("Medio")
-    .setPosition(320, 600)
-    .setSize(80, 30)
-    .setLabel("medium");
-    medio.setColorBackground(color(#8F52F5));
+    .setPosition(((2*width)/4)-50, 600)
+    .setSize(120, 30)
+    .setLabel("medium")
+    .setFont(customFont);
+    medio.setColorBackground(color(#216755));
     dificil.addButton("Dificil")
-    .setPosition(540, 600)
-    .setSize(80, 30)
-    .setLabel("hard");
-    dificil.setColorBackground(color(#8F52F5));
+    .setPosition((3*width)/4-20, 600)
+    .setSize(120, 30)
+    .setLabel("hard")
+    .setFont(customFont);
+    dificil.setColorBackground(color(#216755));
     
   frameRate(10);
 }
