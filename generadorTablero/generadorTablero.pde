@@ -1,5 +1,9 @@
+import netP5.*;
 import oscP5.*;
 OscP5 oscP5;
+OscP5 oscPURE;
+NetAddress pureDataAddress;
+
 import controlP5.*;
 float y1;
 float x1;
@@ -51,7 +55,9 @@ boolean gano;
 boolean inicio = true;
 
 void setup(){
+  oscPURE = new OscP5(this,11111);
   oscP5 = new OscP5(this, port);
+  pureDataAddress = new NetAddress("localhost",11112);
   size(720,720);
   fondo = loadImage("fondo_inicio.png");
   piso60 = loadImage("piso60.png");
@@ -87,7 +93,16 @@ void setup(){
     dificil.setColorBackground(color(#216755));
   frameRate(120);
 }
-
+//activar sonido
+void sendStartMessage(){
+  OscMessage startmessage = new OscMessage("/start");
+  oscPURE.send(startmessage,pureDataAddress);
+}
+void keyPressed(){
+  if (keyCode == 32 ){
+    sendStartMessage();
+  }
+}
 void oscEvent(OscMessage message) {
   if(message.checkAddrPattern("/multisense/orientation/pitch")){
     y1 = message.get(0).floatValue();
