@@ -14,6 +14,7 @@ class Linea{
 
   void drawLinea(){
     stroke(255);
+    strokeWeight(10);
     /*strokeCap(ROUND);
     smooth();*/
     line(x1,y1,x2,y2);

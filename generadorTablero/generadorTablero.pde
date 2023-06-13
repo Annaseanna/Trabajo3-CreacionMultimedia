@@ -9,7 +9,7 @@ float y1;
 float x1;
 float y2;
 float x2;
-float speed = 0.5;
+float speed = 0.2;
 float posx1;
 float posy1;
 float posx2;
@@ -47,7 +47,7 @@ boolean acabadoDeDibujar=false;
 ArrayList<Bloque> conjunto=new ArrayList<Bloque>();
 float[] posicionBolita1;
 float[] posicionBolita2;
-int sensibilidad=10;
+int sensibilidad=20;
 PFont customFont;
 int port=2020;
 boolean gano;
@@ -128,10 +128,10 @@ void crearEscena(int dificultad){
   columnas=width/tam;
   bloques= new Bloque[filas][columnas];
   posicion_trofeo = int(tam/2 + int(random(1,columnas))*tam);
-  posx1 = tam/2-20;
-  posy1 = tam/2-20;
-  posx2 = tam/2+20;
-  posy2 = tam/2+20;
+  posx1 = tam/2;
+  posy1 = tam/2;
+  posx2 = tam/2;
+  posy2 = tam/2;
   
   //creacion de bloques
   for (int i=0;i<filas;i++){
@@ -191,7 +191,6 @@ void draw(){
        datos_lineas = new ArrayList<Linea>();
       for (int i=0;i<filas;i++){
         for (int j=0;j<columnas;j++){
-          strokeWeight(10);
           dato_linea = bloques[i][j].mostrar();
           datos_lineas.addAll(dato_linea);
         }
@@ -306,37 +305,6 @@ void draw(){
     }
   }
 }
-boolean colision(float x, float y,float posx,float posy,float[] posicionBolita,Bolita bolita, boolean jugador){
-    posx += x*speed;
-    posy += y*speed*-1;
-    posicionBolita = bolita.mostrar(posx1,posy1,jugador);
-    println("posicion x"+posicionBolita[0]);
-    println("posicion y"+posicionBolita[1]);
-    print("tamano datos "+datos_lineas.size());
-    for (int i=0;i<datos_lineas.size();i++){
-      if(datos_lineas.get(i).pos){
-        if(posicionBolita[0]<datos_lineas.get(i).x1 & posicionBolita[0]>datos_lineas.get(i).x2){
-          if(abs(posicionBolita[1]-datos_lineas.get(i).y1)<=sensibilidad){
-            posx = tam/2;
-            posy = tam/2;
-            }  
-          }
-      }
-      else{
-        if(posicionBolita[1]<datos_lineas.get(i).y2 & posicionBolita[1]>datos_lineas.get(i).y1){
-          if(abs(posicionBolita[0]-datos_lineas.get(i).x1)<=sensibilidad){
-            posx = tam/2;
-            posy = tam/2;
-          }  
-        }
-      }
-      if(abs(posicionBolita[0]-posicion_trofeo)<tam/2 - 5 & abs(posicionBolita[1]- (height - tam/2))<tam/2 - 5){
-        return true;
-      }
-    }
-    return false;
-}
-
 void quitarParedes(Bloque ah,Bloque sig){
   int disx=ah.actFila - sig.actFila;
   int disy=ah.actCol - sig.actCol;

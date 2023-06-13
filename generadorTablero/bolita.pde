@@ -5,10 +5,10 @@ class Bolita {
     stroke(255);
     strokeWeight(4);
     if (jug) {
-      image(player1,cx-20,cy-20);
+      image(player1,cx,cy);
     }
     else {
-      image(player2,cx+20,cy+20);
+      image(player2,cx,cy);
     }
     float[] xd = {cx,cy};
     return xd;
