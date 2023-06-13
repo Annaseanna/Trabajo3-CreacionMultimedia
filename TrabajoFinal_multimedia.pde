@@ -18,8 +18,13 @@ void oscEvent(OscMessage message) {
     println("x :"+message.get(0).floatValue());
   }
 }
+float posx = width/2;
+float posy = height/2;
+float speed = 0.5;
 void draw(){
+  posx += x*speed;
+  posy += y*speed*-1;
   background(0);
   fill(255);
-  circle(width/2+x*2,height/2+y*2,30);
+  circle(posx,posy,30);
   }

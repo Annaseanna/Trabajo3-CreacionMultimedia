@@ -1,7 +1,11 @@
-import netP5.*;
 import oscP5.*;
+OscP5 oscP5;
 import controlP5.*;
-//
+float y;
+float x;
+float speed = 0.5;
+float posx;
+float posy;
 PImage fondo;
 PImage piso;
 PImage generadorTablero;
@@ -28,13 +32,11 @@ float[] posicionBolita;
 int sensibilidad=10;
 PFont customFont;
 int port=2020;
-OscP5 oscP5;
-float acumX;
-float acumY;
 
 boolean inicio = true;
 
 void setup(){
+  oscP5 = new OscP5(this, port);
   size(720,720);
   fondo = loadImage("fondo_inicio.png");
   piso = loadImage("piso60.png");
@@ -62,8 +64,18 @@ void setup(){
     .setLabel("hard")
     .setFont(customFont);
     dificil.setColorBackground(color(#216755));
-  oscP5 = new OscP5(this, port);
-  frameRate(10);
+  frameRate(120);
+}
+
+void oscEvent(OscMessage message) {
+  if(message.checkAddrPattern("/multisense/orientation/pitch")){
+    y = message.get(0).floatValue();
+    println("y: "+message.get(0).floatValue());
+  }
+  if(message.checkAddrPattern("/multisense/orientation/roll")){
+    x = message.get(0).floatValue();
+    println("x :"+message.get(0).floatValue());
+  }
 }
 
 void crearEscena(int dificultad){
@@ -72,6 +84,8 @@ void crearEscena(int dificultad){
   columnas=width/tam;
   bloques= new Bloque[filas][columnas];
   posicion_trofeo = int(tam/2 + int(random(1,columnas))*tam);
+  posx = tam/2;
+  posy = tam/2;
   
   //creacion de bloques
   for (int i=0;i<filas;i++){
@@ -113,11 +127,17 @@ void Dificil(){
   dificil.remove("Dificil");
 }
 
+int ralentizador = -1;
 void draw(){
+  if(!acabadoDeDibujar){
+    ralentizador++;
+  } else {
+    ralentizador = 10;
+  }
   if(inicio){
     image(fondo,0,0);
   } else {
-    if (!acabadoDeDibujar){
+    if (ralentizador%10 == 0){
       background(0,255,255);
       strokeWeight(4);
       //Mostrar la cuadricula
@@ -128,7 +148,9 @@ void draw(){
           datos_lineas.addAll(dato_linea);
         }
       }
-      image(generadorTablero,ahora.x+tam/4,ahora.y+tam/4);
+      if(!acabadoDeDibujar){
+        image(generadorTablero,ahora.x+tam/4,ahora.y+tam/4);
+      }
       
       if(ahora.vecinosSinVisitar()){
         Bloque siguiente = ahora.vecinoAleatorio();
@@ -140,57 +162,51 @@ void draw(){
         conjunto.remove(siguiente);
         ahora =siguiente;
       } else {
+        acabadoDeDibujar = true;
         //print("Laberinto finalizado");
         //pintarUltimaFilaAleatoriamente();
         //noLoop();
       }
-    }
-    fill(255);
-    circle(posicion_trofeo,height - tam/2,tam/2 - 5);
-    
-    posicionBolita=bolita.mostrar(mouseX,mouseY);
-    println("posicion x"+posicionBolita[0]);
-    println("posicion y"+posicionBolita[1]);
-    print("tamano datos "+datos_lineas.size());
-    for (int i=0;i<datos_lineas.size();i++){
-      if(datos_lineas.get(i).pos){
-        if(posicionBolita[0]<datos_lineas.get(i).x1 & posicionBolita[0]>datos_lineas.get(i).x2){
-          if(abs(posicionBolita[1]-datos_lineas.get(i).y1)<=sensibilidad){
-            //SE ACTIVA
-            println("toco linea horizontal");
+    } 
+    if(acabadoDeDibujar) {
+      fill(255);
+      circle(posicion_trofeo,height - tam/2,tam/2 - 5);
+      posx += x*speed;
+      posy += y*speed*-1;
+      posicionBolita = bolita.mostrar(posx,posy);
+      println("posicion x"+posicionBolita[0]);
+      println("posicion y"+posicionBolita[1]);
+      print("tamano datos "+datos_lineas.size());
+      for (int i=0;i<datos_lineas.size();i++){
+        if(datos_lineas.get(i).pos){
+          if(posicionBolita[0]<datos_lineas.get(i).x1 & posicionBolita[0]>datos_lineas.get(i).x2){
+            if(abs(posicionBolita[1]-datos_lineas.get(i).y1)<=sensibilidad){
+              posx = tam/2;
+              posy = tam/2;
+              }  
+            }
+        }
+        else{
+          if(posicionBolita[1]<datos_lineas.get(i).y2 & posicionBolita[1]>datos_lineas.get(i).y1){
+            if(abs(posicionBolita[0]-datos_lineas.get(i).x1)<=sensibilidad){
+              posx = tam/2;
+              posy = tam/2;
             }  
           }
-      }
-      else{
-        if(posicionBolita[1]<datos_lineas.get(i).y2 & posicionBolita[1]>datos_lineas.get(i).y1){
-          if(abs(posicionBolita[0]-datos_lineas.get(i).x1)<=sensibilidad){
-            println("toco linea vertical");
-            //SE ACTIVA
-          }  
         }
       }
-    }
-   // println(abs(posicionBolita[1]- (height - tam/2))<tam/2 - 5);
-    if(abs(posicionBolita[0]-posicion_trofeo)<tam/2 - 5 & abs(posicionBolita[1]- (height - tam/2))<tam/2 - 5){
-      background(0);
-      fill(255);
-      textSize(128);
-      text("GANASTE", width/10, height/2-30);
-      noLoop();
+     // println(abs(posicionBolita[1]- (height - tam/2))<tam/2 - 5);
+      if(abs(posicionBolita[0]-posicion_trofeo)<tam/2 - 5 & abs(posicionBolita[1]- (height - tam/2))<tam/2 - 5){
+        background(0);
+        fill(255);
+        textSize(128);
+        text("GANASTE", width/10, height/2-30);
+        noLoop();
+      }
     }
   }
 }
-/*float[] oscEvent(OscMessage message) {
-  if(message.checkAddrPattern("/multisense/orientation/pitch")){
-    acumY = acumY+message.get(0).floatValue();
-    println("y: "+message.get(0).floatValue());
-  }
-  if(message.checkAddrPattern("/multisense/orientation/roll")){
-    acumX= acumX+message.get(0).floatValue();
-    println("x :"+message.get(0).floatValue());
-  }
-  float[] acum = {acumY,acumX};
-}*/
+
 
 void quitarParedes(Bloque ah,Bloque sig){
   int disx=ah.actFila - sig.actFila;
