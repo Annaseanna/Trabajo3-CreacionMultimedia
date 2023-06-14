@@ -3,6 +3,7 @@ import oscP5.*;
 OscP5 oscP5;
 OscP5 oscPURE;
 NetAddress pureDataAddress;
+NetAddress pureDataAddress1;
 import processing.sound.*;
 import controlP5.*;
 SoundFile golpe;
@@ -10,6 +11,8 @@ float y1;
 float x1;
 float y2;
 float x2;
+float z1;
+float z2;
 float speed = 0.3;
 float posx1;
 float posy1;
@@ -63,6 +66,7 @@ void setup(){
   oscPURE = new OscP5(this,11111);
   oscP5 = new OscP5(this, port);
   pureDataAddress = new NetAddress("localhost",11112);
+  pureDataAddress1 = new NetAddress("localhost",11115);
   size(720,720);
   wallv=loadImage("wall1vertical.png");
   wallh=loadImage("wall1horizontal.png");
@@ -130,6 +134,13 @@ void oscEvent(OscMessage message) {
     x2 = message.get(0).floatValue();
     println("x1 :"+message.get(0).floatValue());
   }
+  if(message.checkAddrPattern("/multisense/orientation/yaw")){
+    z1 = abs(message.get(0).floatValue());
+    println("z1 :"+message.get(0).floatValue());
+  }
+  OscMessage messagea = new OscMessage("/metronome/speed");
+  messagea.add(z1);
+  oscP5.send(messagea,pureDataAddress1);
 }
 
 void crearEscena(int dificultad){
