@@ -19,6 +19,7 @@ class Bloque {
    ArrayList<Linea> lineas=new ArrayList<Linea>();
    if(tomadoPorLaberinto){ // pinta el camino recorrido (azul oscuro)
      noStroke();
+     blendMode(BLEND);
      if (tam ==60){
        image(piso60,x,y);
      }

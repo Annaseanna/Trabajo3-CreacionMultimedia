@@ -18,6 +18,8 @@ PImage fondo;
 PImage piso60;
 PImage piso80;
 PImage piso120;
+PImage ganoHe;
+PImage ganoPo;
 PImage generadorTablero;
 PImage cuadricula;
 PImage ganador;
@@ -68,6 +70,8 @@ void setup(){
   generadorTablero=loadImage("dementor.png");
   cuadricula=loadImage("cuadricula.png");
   ganador=loadImage("ganador.png");
+  ganoHe=loadImage("ganoHermione.png");
+  ganoPo=loadImage("ganoHarry.png");
   //creacion botones
   facil = new ControlP5(this);
   medio = new ControlP5(this);
@@ -264,10 +268,7 @@ void draw(){
           }
         }
         if(abs(posicionBolita1[0]-posicion_trofeo)<tam/2 - 5 & abs(posicionBolita1[1]- (height - tam/2))<tam/2 - 5){
-          background(0);
-          fill(255);
-          textSize(128);
-          text("GANASTE 1", width/10, height/2-30);
+          image(ganoHe,0,0);
           noLoop();
         }
       }
@@ -293,10 +294,7 @@ void draw(){
           }
         }
         if(abs(posicionBolita2[0]-posicion_trofeo)<tam/2 - 5 & abs(posicionBolita2[1]- (height - tam/2))<tam/2 - 5){
-          background(0);
-          fill(255);
-          textSize(128);
-          text("GANASTE 2", width/10, height/2-30);
+          image(ganoPo,0,0);
           noLoop();
         }
       }
