@@ -3,8 +3,9 @@ import oscP5.*;
 OscP5 oscP5;
 OscP5 oscPURE;
 NetAddress pureDataAddress;
-
+import processing.sound.*;
 import controlP5.*;
+SoundFile golpe;
 float y1;
 float x1;
 float y2;
@@ -72,6 +73,7 @@ void setup(){
   ganador=loadImage("ganador.png");
   ganoHe=loadImage("ganoHermione.png");
   ganoPo=loadImage("ganoHarry.png");
+  golpe=new SoundFile(this,"golpe.mp3");
   //creacion botones
   facil = new ControlP5(this);
   medio = new ControlP5(this);
@@ -256,6 +258,7 @@ void draw(){
             if(abs(posicionBolita1[1]-datos_lineas.get(i).y1)<=sensibilidad){
               posx1 = tam/2;
               posy1 = tam/2;
+              golpe.play();
               }  
             }
         }
@@ -264,6 +267,7 @@ void draw(){
             if(abs(posicionBolita1[0]-datos_lineas.get(i).x1)<=sensibilidad){
               posx1 = tam/2;
               posy1 = tam/2;
+              golpe.play();
             }  
           }
         }
@@ -282,6 +286,7 @@ void draw(){
             if(abs(posicionBolita2[1]-datos_lineas.get(i).y1)<=sensibilidad){
               posx2 = tam/2;
               posy2 = tam/2;
+              golpe.play();
               }  
             }
         }
@@ -290,6 +295,7 @@ void draw(){
             if(abs(posicionBolita2[0]-datos_lineas.get(i).x1)<=sensibilidad){
               posx2 = tam/2;
               posy2 = tam/2;
+              golpe.play();
             }  
           }
         }
