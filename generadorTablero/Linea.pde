@@ -13,11 +13,60 @@ class Linea{
   }
 
   void drawLinea(){
+    int dist;
     stroke(#245045);
     strokeWeight(10);
     /*strokeCap(ROUND);
     smooth();*/
-    line(x1,y1,x2,y2);
+   line(x1,y1,x2,y2);
+    if(pos){
+      dist = int(abs(x1-x2));
+      switch(dist){
+        case 60:
+          image(wallh,x1-5,y1-5);
+          image(wallh,x1-5+20,y1-5);
+          image(wallh,x1-5+40,y1-5);
+          break;
+        case 80:
+          image(wallh,x1-5,y1-5);
+          image(wallh,x1-5+20,y1-5);
+          image(wallh,x1-5+40,y1-5);
+          image(wallh,x1-5+60,y1-5);
+          break;
+        case 120:
+          image(wallh,x1-5,y1-5);
+          image(wallh,x1-5+20,y1-5);
+          image(wallh,x1-5+40,y1-5);
+          image(wallh,x1-5+60,y1-5);
+          image(wallh,x1-5+80,y1-5);
+          image(wallh,x1-5+100,y1-5);
+          break;
+      }
+    } 
+    if(!pos){
+      dist = int(abs(y1-y2));
+      switch(dist){
+        case 60:
+          image(wallv,x1-5,y1-5);
+          image(wallv,x1-5,y1-5+20);
+          image(wallv,x1-5,y1-5+40);
+          break;
+        case 80:
+          image(wallv,x1-5,y1-5);
+          image(wallv,x1-5,y1-5+20);
+          image(wallv,x1-5,y1-5+40);
+          image(wallv,x1-5,y1-5+60);
+          break;
+        case 120:
+          image(wallv,x1-5,y1-5);
+          image(wallv,x1-5,y1-5+20);
+          image(wallv,x1-5,y1-5+40);
+          image(wallv,x1-5,y1-5+60);
+          image(wallv,x1-5,y1-5+80);
+          image(wallv,x1-5,y1-5+100);
+          break;
+      }
+    }
   }
 
 }

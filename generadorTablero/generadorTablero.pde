@@ -26,6 +26,8 @@ PImage cuadricula;
 PImage ganador;
 PImage player1;
 PImage player2;
+PImage wallv;
+PImage wallh;
 //botones
 ControlP5 facil;
 ControlP5 medio;
@@ -62,6 +64,8 @@ void setup(){
   oscP5 = new OscP5(this, port);
   pureDataAddress = new NetAddress("localhost",11112);
   size(720,720);
+  wallv=loadImage("wall1vertical.png");
+  wallh=loadImage("wall1horizontal.png");
   fondo = loadImage("fondo_inicio.png");
   piso60 = loadImage("piso60.png");
   piso80 = loadImage("piso80.png");
@@ -254,7 +258,7 @@ void draw(){
       print("tamano datos "+datos_lineas.size());
       for (int i=0;i<datos_lineas.size();i++){
         if(datos_lineas.get(i).pos){
-          if(posicionBolita1[0]<datos_lineas.get(i).x1 & posicionBolita1[0]>datos_lineas.get(i).x2){
+          if(posicionBolita1[0]<datos_lineas.get(i).x2 & posicionBolita1[0]>datos_lineas.get(i).x1){
             if(abs(posicionBolita1[1]-datos_lineas.get(i).y1)<=sensibilidad){
               posx1 = tam/2;
               posy1 = tam/2;
@@ -282,7 +286,7 @@ void draw(){
       print("tamano datos "+datos_lineas.size());
       for (int i=0;i<datos_lineas.size();i++){
         if(datos_lineas.get(i).pos){
-          if(posicionBolita2[0]<datos_lineas.get(i).x1 & posicionBolita2[0]>datos_lineas.get(i).x2){
+          if(posicionBolita2[0]<datos_lineas.get(i).x2 & posicionBolita2[0]>datos_lineas.get(i).x1){
             if(abs(posicionBolita2[1]-datos_lineas.get(i).y1)<=sensibilidad){
               posx2 = tam/2;
               posy2 = tam/2;

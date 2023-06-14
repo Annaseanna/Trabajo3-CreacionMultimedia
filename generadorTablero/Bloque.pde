@@ -19,7 +19,7 @@ class Bloque {
    ArrayList<Linea> lineas=new ArrayList<Linea>();
    if(tomadoPorLaberinto){ // pinta el camino recorrido (azul oscuro)
      noStroke();
-     blendMode(BLEND);
+     //blendMode(BLEND);
      if (tam ==60){
        image(piso60,x,y);
      }
@@ -31,7 +31,7 @@ class Bloque {
      }
    }
    if (caminos[0]){
-     Linea datos = new Linea(x+tam,y,x,y,true);
+     Linea datos = new Linea(x,y,x+tam,y,true);
      datos.drawLinea();
      lineas.add(datos);
    }
@@ -41,7 +41,7 @@ class Bloque {
      lineas.add(datos);
    }
    if (caminos[2]){
-     Linea datos = new Linea(x+tam,y+tam,x,y+tam,true);
+     Linea datos = new Linea(x,y+tam,x+tam,y+tam,true);
      datos.drawLinea();
      lineas.add(datos);
    }
