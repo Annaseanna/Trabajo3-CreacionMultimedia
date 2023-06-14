@@ -13,7 +13,7 @@ float y2;
 float x2;
 float z1;
 float z2;
-float speed = 0.3;
+float speed = 0.1 ;
 float posx1;
 float posy1;
 float posx2;
@@ -135,7 +135,7 @@ void oscEvent(OscMessage message) {
     println("x1 :"+message.get(0).floatValue());
   }
   if(message.checkAddrPattern("/multisense/orientation/yaw")){
-    z1 = int(message.get(0).floatValue())*0.5;
+    z1 = int(message.get(0).floatValue()*0.5);
     println("z1 :"+message.get(0).floatValue());
   }
 }
@@ -265,7 +265,7 @@ void draw(){
       posx2 += x2*speed;
       posy2 += y2*speed*-1;
       //boolean gano1=colision(x1,y1,posx1,posy1,posicionBolita1,bolita1,true);
-      posicionBolita1 = bolita1.mostrar(posx1,posy1,true);
+      posicionBolita1 = bolita1.mostrar(posx1-15,posy1-15,true);
       println("posicion x"+posicionBolita1[0]);
       println("posicion y"+posicionBolita1[1]);
       print("tamano datos "+datos_lineas.size());
@@ -293,7 +293,7 @@ void draw(){
           noLoop();
         }
       }
-      posicionBolita2 = bolita2.mostrar(posx2,posy2,false);
+      posicionBolita2 = bolita2.mostrar(posx2-15,posy2-15,false);
       println("posicion x"+posicionBolita1[0]);
       println("posicion y"+posicionBolita1[1]);
       print("tamano datos "+datos_lineas.size());
