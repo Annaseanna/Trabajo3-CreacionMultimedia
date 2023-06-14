@@ -17,6 +17,18 @@ class Bloque {
  ArrayList<Linea> mostrar(){
    //Array de lineas
    ArrayList<Linea> lineas=new ArrayList<Linea>();
+   if(tomadoPorLaberinto){ // pinta el camino recorrido (azul oscuro)
+     noStroke();
+     if (tam ==60){
+       image(piso60,x,y);
+     }
+     if (tam==80){
+       image(piso80,x,y);
+     }
+     else{
+       image(piso120,x,y);
+     }
+   }
    if (caminos[0]){
      Linea datos = new Linea(x+tam,y,x,y,true);
      datos.drawLinea();
@@ -37,18 +49,7 @@ class Bloque {
      datos.drawLinea();
      lineas.add(datos);
    }
-   if(tomadoPorLaberinto){ // pinta el camino recorrido (azul oscuro)
-     noStroke();
-     if (tam ==60){
-       image(piso60,x,y);
-     }
-     if (tam==80){
-       image(piso80,x,y);
-     }
-     else{
-       image(piso120,x,y);
-     }
-   }
+   
    return lineas;
  }
  

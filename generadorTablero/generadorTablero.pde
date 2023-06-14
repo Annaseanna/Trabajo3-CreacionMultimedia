@@ -9,7 +9,7 @@ float y1;
 float x1;
 float y2;
 float x2;
-float speed = 0.05;
+float speed = 0.3;
 float posx1;
 float posy1;
 float posx2;
@@ -65,7 +65,7 @@ void setup(){
   piso120 = loadImage("piso120.png");
   player1 = loadImage("player1.png");
   player2 = loadImage("player2.png");
-  generadorTablero=loadImage("generador_tablero.png");
+  generadorTablero=loadImage("dementor.png");
   cuadricula=loadImage("cuadricula.png");
   ganador=loadImage("ganador.png");
   //creacion botones
@@ -100,6 +100,7 @@ void sendStartMessage(){
 }
 void keyPressed(){
   if (keyCode == 32 ){
+    println("BARRRRRA ESPACIADORAAAAAAAAAAA");
     sendStartMessage();
   }
 }
