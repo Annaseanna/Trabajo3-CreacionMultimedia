@@ -135,12 +135,9 @@ void oscEvent(OscMessage message) {
     println("x1 :"+message.get(0).floatValue());
   }
   if(message.checkAddrPattern("/multisense/orientation/yaw")){
-    z1 = abs(message.get(0).floatValue());
+    z1 = int(message.get(0).floatValue())*0.5;
     println("z1 :"+message.get(0).floatValue());
   }
-  OscMessage messagea = new OscMessage("/metronome/speed");
-  messagea.add(z1);
-  oscP5.send(messagea,pureDataAddress1);
 }
 
 void crearEscena(int dificultad){
@@ -199,6 +196,9 @@ void Dificil(){
 
 int ralentizador = -1;
 void draw(){
+  OscMessage messagea = new OscMessage("/metronome");
+  messagea.add(z1);
+  oscP5.send(messagea,pureDataAddress1);
   if(!acabadoDeDibujar){
     ralentizador++;
   } else {
