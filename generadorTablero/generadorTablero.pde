@@ -110,7 +110,6 @@ void sendStartMessage(){
 }
 void keyPressed(){
   if (keyCode == 32 ){
-    println("BARRRRRA ESPACIADORAAAAAAAAAAA");
     sendStartMessage();
   }
 }
@@ -162,6 +161,7 @@ void crearEscena(int dificultad){
 }
 
 void Facil(){
+  sendStartMessage(); 
   crearEscena(120);
   inicio = false;
   facil.remove("Facil"); 
@@ -170,6 +170,7 @@ void Facil(){
 }
 
 void Medio(){
+  sendStartMessage();
   crearEscena(80);
   inicio = false;
   facil.remove("Facil"); 
@@ -177,6 +178,7 @@ void Medio(){
   dificil.remove("Dificil");
 }
 void Dificil(){
+  sendStartMessage();
   crearEscena(60);
   inicio = false;
   facil.remove("Facil"); 
