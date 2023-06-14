@@ -9,7 +9,7 @@ float y1;
 float x1;
 float y2;
 float x2;
-float speed = 0.2;
+float speed = 0.3;
 float posx1;
 float posy1;
 float posx2;
@@ -100,6 +100,7 @@ void sendStartMessage(){
 }
 void keyPressed(){
   if (keyCode == 32 ){
+    println("BARRRRRA ESPACIADORAAAAAAAAAAA");
     sendStartMessage();
   }
 }

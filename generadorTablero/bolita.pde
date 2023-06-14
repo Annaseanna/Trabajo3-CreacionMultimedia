@@ -10,7 +10,7 @@ class Bolita {
     else {
       image(player2,cx,cy);
     }
-    float[] xd = {cx,cy};
+    float[] xd = {cx+15,cy+15};
     return xd;
   }
 }

@@ -13,7 +13,7 @@ class Linea{
   }
 
   void drawLinea(){
-    stroke(255);
+    stroke(#245045);
     strokeWeight(10);
     /*strokeCap(ROUND);
     smooth();*/
