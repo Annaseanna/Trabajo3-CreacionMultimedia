@@ -65,7 +65,7 @@ void setup(){
   piso120 = loadImage("piso120.png");
   player1 = loadImage("player1.png");
   player2 = loadImage("player2.png");
-  generadorTablero=loadImage("generador_tablero.png");
+  generadorTablero=loadImage("dementor.png");
   cuadricula=loadImage("cuadricula.png");
   ganador=loadImage("ganador.png");
   //creacion botones
